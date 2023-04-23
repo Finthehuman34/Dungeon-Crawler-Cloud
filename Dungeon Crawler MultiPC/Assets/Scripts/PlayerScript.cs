@@ -5,22 +5,29 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    private float horizontal;
-    private float vertical;
-    private float speed = 4.0f;
-    Rigidbody2D rb;
+    public float moveSpeed = 5f;
 
-    void Start()
-    {
-       rb = GetComponent<Rigidbody2D>(); 
-    }
+    public Rigidbody2D rb;
+    public Animator animator;
+
+    Vector2 movement;
+
 
     // Update is called once per frame
     void Update()
     {
-       horizontal = Input.GetAxisRaw("Horizontal");
-       vertical = Input.GetAxisRaw("Vertical"); 
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-       rb.velocity = new Vector2(horizontal * speed, vertical * speed);
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+       
+    }
+
+    void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
