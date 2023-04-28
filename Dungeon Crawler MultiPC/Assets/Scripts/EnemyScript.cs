@@ -16,12 +16,14 @@ public class EnemyScript : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         range = Vector2.Distance(transform.position, target.position);
-        if(range < minDistance) {
-            if(!targetCollision){
+        if(range < minDistance)
+        {
+            if(!targetCollision)
+            {
                 transform.LookAt(target.position);
 
                 transform.Rotate(new Vector3(0, -90, 0),Space.Self);
