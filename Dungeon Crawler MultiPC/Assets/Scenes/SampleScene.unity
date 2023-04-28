@@ -68442,6 +68442,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: -1, y: 42, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 6
+      m_TileSpriteIndex: 6
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 177
@@ -68456,6 +68466,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: e592397ae38d59446b387b3adcaa116d, type: 2}
   - m_RefCount: 125
     m_Data: {fileID: 11400000, guid: e8c61dd602ffbba4e95e7e90562741a4, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 6a83a30c0d5d71b4cab0edf42627553e, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 177
     m_Data: {fileID: 21300000, guid: 00393129f54fde347840444e3a323632, type: 3}
@@ -68469,8 +68481,10 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 189c6da4eb853ce48a1de1de27f91ac9, type: 3}
   - m_RefCount: 125
     m_Data: {fileID: 21300000, guid: 2ca100ca3ec26504985ef3126a02c647, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: e5c5c77a1e64d96458fecbb8be360aa0, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 869
+  - m_RefCount: 870
     m_Data:
       e00: 1
       e01: 0
@@ -68489,13 +68503,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 869
+  - m_RefCount: 870
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -27, y: -12, z: 0}
-  m_Size: {x: 73, y: 46, z: 1}
+  m_Size: {x: 73, y: 55, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -86484,7 +86498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 100
+  m_AssetsPPU: 150
   m_RefResolutionX: 1920
   m_RefResolutionY: 1080
   m_UpscaleRT: 1
