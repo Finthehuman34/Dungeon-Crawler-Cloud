@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 174953110}
   - component: {fileID: 174953109}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Options Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1425,7 +1425,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0.56624997, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2424,7 +2424,7 @@ GameObject:
   - component: {fileID: 1707358971}
   - component: {fileID: 1707358970}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Quit Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2580,8 +2580,8 @@ RectTransform:
   m_Father: {fileID: 1635065940}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.56624997, y: 0}
+  m_AnchorMax: {x: 0.56624997, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2770,7 +2770,7 @@ GameObject:
   - component: {fileID: 2108822484}
   - component: {fileID: 2108822483}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Play Button Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
