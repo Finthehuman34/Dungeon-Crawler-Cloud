@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal",movement.x); // gets input for the animator paramaters
         animator.SetFloat("Vertical",movement.y);
         animator.SetFloat("Speed",movement.sqrMagnitude);
+
+    
         
     }
 
