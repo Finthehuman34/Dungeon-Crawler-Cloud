@@ -5,9 +5,10 @@ using UnityEngine;
 public class Testing : MonoBehaviour
 {
     
+    private Pathfinding pathfinding;
     private void Start()
     {
-     Grid grid = new Grid(227,162, 0.3f, new Vector3(-31.02f,-28.47f));   
+     pathfinding = new Pathfinding(10,10);  
     }
 
     
