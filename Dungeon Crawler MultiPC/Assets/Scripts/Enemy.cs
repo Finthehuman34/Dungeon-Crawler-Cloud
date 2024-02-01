@@ -6,22 +6,35 @@ public class Enemy : MonoBehaviour
 {
     public Transform player;
     public float detectionRange = 10f;
-    public float moveSpeed = 3f; // Added moveSpeed variable
+    public float moveSpeed = 3f; 
+    public float pathUpdateCooldown = 1f; // Adjust the cooldown duration as needed
 
     private Pathfinding pathfinding;
     private List<Vector3> currentPath;
     private int currentPathIndex = 0;
+    private float lastPathUpdateTime;
 
     void Start()
     {
-        pathfinding = new Pathfinding(227, 168); // Initialize with the specified width and height
+        // Ensure the player reference is obtained correctly
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        
+
+        pathfinding = new Pathfinding(227, 168);
+        lastPathUpdateTime = Time.time;
         // Other initialization...
     }
 
     void Update()
     {
+        
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer < detectionRange)
+        if (distanceToPlayer < detectionRange && Time.time - lastPathUpdateTime > pathUpdateCooldown)
         {
             // Update the path to the player
             List<Vector3> newPath = pathfinding.UpdatePathToPlayer(transform.position, player.position);
@@ -32,6 +45,7 @@ public class Enemy : MonoBehaviour
                 currentPath = newPath;
                 currentPathIndex = 0;
                 MoveEnemy();
+                lastPathUpdateTime = Time.time; // Update the last update time
             }
         }
     }
