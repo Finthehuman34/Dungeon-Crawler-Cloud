@@ -15,9 +15,24 @@ public class Pathfinding {
     private List<PathNode> openList; // nodes queued for searching
     private List<PathNode> closedList; // nodes already searched
 
-    public Pathfinding(int width, int height) { // pathfinding constructor
-        Instance = this; // creates an instance for debugging
-        grid = new Grid<PathNode>(width, height, 0.3f, new Vector3(-31.02f,-28.47f), (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y)); // initialises the grid
+    public Pathfinding(int width, int height, Vector3 gridPosition)
+    {
+        Instance = this;
+        InitializeGrid(width, height, gridPosition);
+    }
+
+    public void ClearGrid() {
+        grid.ClearGrid();
+    }
+
+    private void InitializeGrid(int width, int height, Vector3 gridPosition)
+    {
+        if (grid != null)
+        {
+            grid.ClearGrid();
+        }
+
+        grid = new Grid<PathNode>(width, height, 0.3f, gridPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
     public Grid<PathNode> GetGrid() { // get method for getting the grid

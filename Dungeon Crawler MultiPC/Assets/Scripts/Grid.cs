@@ -35,23 +35,49 @@ public class Grid<TGridObject> {
         }
 
         bool showDebug = true;
-        if (showDebug) {
+        if (showDebug)
+        {
             TextMesh[,] debugTextArray = new TextMesh[width, height];
 
-            for (int x = 0; x < gridArray.GetLength(0); x++) {
-                for (int y = 0; y < gridArray.GetLength(1); y++) {
-                    
+            for (int x = 0; x < gridArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < gridArray.GetLength(1); y++)
+                {
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
+
+                    // Initialize debugTextArray
+                    debugTextArray[x, y] = new TextMesh();
                 }
             }
+
             Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
 
-            OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) => {
-                debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
+            OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
+            {
+                // Ensure that debugTextArray[eventArgs.x, eventArgs.y] is not null
+                if (debugTextArray[eventArgs.x, eventArgs.y] != null)
+                {
+                    debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
+                }
             };
         }
+
+    }
+
+    public void ClearGrid()
+    {
+    for (int x = 0; x < gridArray.GetLength(0); x++)
+    {
+        for (int y = 0; y < gridArray.GetLength(1); y++)
+        {
+            SetGridObject(x, y, default(TGridObject)); // Set to default value instead of null
+        }
+    }
+
+    // Ensure the event is not null before triggering it
+    OnGridObjectChanged?.Invoke(this, new OnGridObjectChangedEventArgs { x = -1, y = -1 });
     }
 
     public int GetWidth() {
