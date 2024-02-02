@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public Transform player;
-    public float detectionRange = 10f;
-    public float moveSpeed = 3f; 
-    public float pathUpdateCooldown = 1f; // Adjust the cooldown duration as needed
+    public Transform player; // used to get the position of the player
+    public float detectionRange = 10f; // the distance between the enemy and player in which the enemy will chase the player within
+    public float moveSpeed = 3f; // move speed of the enemy
+    public float pathUpdateCooldown = 1f; // used to adjust how often the path calculation is performed
 
     private Pathfinding pathfinding;
     private List<Vector3> currentPath;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        // Ensure the player reference is obtained correctly
+        // ensures the player reference is obtained correctly
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
@@ -24,9 +24,9 @@ public class Enemy : MonoBehaviour
         }
         
 
-        pathfinding = new Pathfinding(227, 168);
+        pathfinding = new Pathfinding(227, 168); // initialise the grid 
         lastPathUpdateTime = Time.time;
-        // Other initialization...
+        
     }
 
     void Update()
