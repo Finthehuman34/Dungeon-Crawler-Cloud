@@ -9,7 +9,7 @@ public class Pathfinding {
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14; // calculated using pythagorus
 
-    public static Pathfinding Instance { get; private set; } // instance is used for debugging specific stages of the pathfinding 
+    
 
     private Grid<PathNode> grid;
     private List<PathNode> openList; // nodes queued for searching
@@ -17,7 +17,7 @@ public class Pathfinding {
 
     public Pathfinding(int width, int height, Vector3 gridPosition)
     {
-        Instance = this;
+        
         InitializeGrid(width, height, gridPosition);
     }
 
@@ -31,7 +31,7 @@ public class Pathfinding {
         {
             grid.ClearGrid();
         }
-
+        Debug.Log("New grid initialised in pathfinding script");
         grid = new Grid<PathNode>(width, height, 0.3f, gridPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
@@ -58,11 +58,24 @@ public class Pathfinding {
     }
 
     public List<PathNode> FindPath(int startX, int startY, int endX, int endY) {
+
+        Debug.Log($"Finding path from ({startX}, {startY}) to ({endX}, {endY})");
+
         PathNode startNode = grid.GetGridObject(startX, startY);
         PathNode endNode = grid.GetGridObject(endX, endY);
 
+        Debug.Log($"Start Node: {startNode}");
+        Debug.Log($"End Node: {endNode}");
+
+        Debug.Log($"Start Node Walkable: {startNode.isWalkable}, End Node Walkable: {endNode.isWalkable}");
+        Debug.Log($"Start Node Position: {startNode.x}, {startNode.y}, End Node Position: {endNode.x}, {endNode.y}");
+
+
+        
+
         if (startNode == null || endNode == null) {
             // Invalid Path
+            Debug.LogError("Invalid Start or End Node!");
             return null;
         }
 
@@ -84,15 +97,14 @@ public class Pathfinding {
         startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
         
-        PathfindingDebugStepVisual.Instance.ClearSnapshots(); // debugging snapshots to ensure the algorithm is functioning correctly
-        PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, startNode, openList, closedList);
+        
 
         while (openList.Count > 0) {
             PathNode currentNode = GetLowestFCostNode(openList);
             if (currentNode == endNode) {
                 // Reached final node
-                PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, currentNode, openList, closedList);
-                PathfindingDebugStepVisual.Instance.TakeSnapshotFinalPath(grid, CalculatePath(endNode));
+                
+
                 return CalculatePath(endNode); // return the final path
             }
 
@@ -118,7 +130,7 @@ public class Pathfinding {
                         openList.Add(neighbourNode);
                     }
                 }
-                PathfindingDebugStepVisual.Instance.TakeSnapshot(grid, currentNode, openList, closedList);
+                
             }
         }
 

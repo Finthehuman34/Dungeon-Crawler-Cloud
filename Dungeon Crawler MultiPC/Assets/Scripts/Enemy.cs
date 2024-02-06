@@ -7,7 +7,8 @@ public class Enemy : MonoBehaviour
     public Transform player;
     public float detectionRange = 5f;
     public float moveSpeed = 3f;
-    public float pathUpdateCooldown = 2f;
+
+    public float pathUpdateCooldown = 5f;
 
     private Pathfinding pathfinding;
     private List<Vector3> currentPath;
@@ -29,33 +30,52 @@ public class Enemy : MonoBehaviour
         int gridSizeY = 20;
         Vector3 initialGridPosition = CalculateGridPosition();
         pathfinding = new Pathfinding(gridSizeX, gridSizeY, initialGridPosition);
+    
     }
 
     void Update()
     {
+        Debug.Log("Enemy Update");
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        
+        
+        Debug.Log("Before cooldown check");
+        
+        Debug.Log($"Last Path Update Time: {lastPathUpdateTime}");
+
         if (distanceToPlayer < detectionRange && Time.time - lastPathUpdateTime > pathUpdateCooldown)
         {
-            // Update the pathfinding grid based on the enemy's position
+            Debug.Log("Updating path");
             UpdatePathfindingGrid();
 
-            // Find a new path to the player
-            List<Vector3> newPath = pathfinding.FindPath(transform.position, player.position);
+            int enemyX, enemyY, playerX, playerY;
+            pathfinding.GetGrid().GetXY(transform.position, out enemyX, out enemyY);
+            pathfinding.GetGrid().GetXY(player.position, out playerX, out playerY);
+            Debug.Log($"Enemy Grid Coordinates: ({enemyX}, {enemyY}), Player Grid Coordinates: ({playerX}, {playerY})");
 
-            // Move the enemy along the path
+
+
+            List<Vector3> newPath = pathfinding.FindPath(enemyX, enemyY, playerX, playerY);
+
             if (newPath != null && newPath.Count > 0)
             {
                 currentPath = newPath;
                 currentPathIndex = 0;
                 MoveEnemy();
                 lastPathUpdateTime = Time.time;
+                Debug.Log("Path found!");
+            }
+            else
+            {
+                Debug.Log("No path found!");
             }
         }
+        Debug.Log("After cooldown check");
     }
 
     private void UpdatePathfindingGrid()
     {
-        pathfinding.ClearGrid();
+        Debug.Log("Updating pathfinding grid");
         // Calculate new grid size and position based on the enemy's position
         int gridSizeX = 20; // Adjust as needed
         int gridSizeY = 20; // Adjust as needed

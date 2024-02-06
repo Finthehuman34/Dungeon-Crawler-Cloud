@@ -20,9 +20,9 @@ public class Grid<TGridObject>
     private float cellSize;
     private Vector3 originPosition;
     private TGridObject[,] gridArray;
-    private TextMesh[,] debugTextArray;
+    
 
-    private bool showDebug;
+    
 
     public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
     {
@@ -33,79 +33,10 @@ public class Grid<TGridObject>
 
         gridArray = new TGridObject[width, height];
 
-        bool showDebug = true;
-        if (showDebug)
-        {
-            debugTextArray = new TextMesh[width, height];
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    // Initialize debugTextArray
-                    debugTextArray[x, y] = new TextMesh();
-
-                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
-                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
-
-                    // Ensure that debugTextArray[x, y] is not null
-                    if (debugTextArray[x, y] != null)
-                    {
-                        debugTextArray[x, y].text = gridArray[x, y]?.ToString();
-                    }
-                }
-            }
-
-            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
-            Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
-
-            OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
-            {
-                int x = eventArgs.x;
-                int y = eventArgs.y;
-
-                // Ensure that debugTextArray[eventArgs.x, eventArgs.y] is not null
-                if (x >= 0 && x < width && y >= 0 && y < height)
-                {
-                    if (debugTextArray[x, y] == null)
-                    {
-                        // Initialize debugTextArray
-                        debugTextArray[x, y] = new TextMesh();
-                    }
-
-                    if (gridArray != null && x < gridArray.GetLength(0) && y < gridArray.GetLength(1))
-                    {
-                        debugTextArray[x, y].text = gridArray[x, y]?.ToString();
-                    }
-                }
-            };
-        }
-
-        InitializeGrid(createGridObject);
+        
     }
 
-    private void HandleGridObjectChanged(object sender, OnGridObjectChangedEventArgs eventArgs)
-    {
-        if (showDebug && debugTextArray != null)
-        {
-            int x = eventArgs.x;
-            int y = eventArgs.y;
-
-            if (x >= 0 && x < width && y >= 0 && y < height)
-            {
-                if (debugTextArray[x, y] == null)
-                {
-                    // Initialize debugTextArray
-                    debugTextArray[x, y] = new TextMesh();
-                }
-
-                if (gridArray != null && x < gridArray.GetLength(0) && y < gridArray.GetLength(1))
-                {
-                    debugTextArray[x, y].text = gridArray[x, y]?.ToString();
-                }
-            }
-        }
-    }
+    
 
     public void ClearGrid()
     {
@@ -140,6 +71,7 @@ public class Grid<TGridObject>
     public void GetXY(Vector3 worldPosition, out int x, out int y) {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
+        Debug.Log($"World Position: {worldPosition}, Grid Coordinates: ({x}, {y})");
     }
 
     public void SetGridObject(int x, int y, TGridObject value) {
@@ -163,6 +95,7 @@ public class Grid<TGridObject>
         if (x >= 0 && y >= 0 && x < width && y < height) {
             return gridArray[x, y];
         } else {
+            Debug.LogError($"Attempted to access grid position ({x}, {y}), which is out of bounds.");
             return default(TGridObject);
         }
     }
