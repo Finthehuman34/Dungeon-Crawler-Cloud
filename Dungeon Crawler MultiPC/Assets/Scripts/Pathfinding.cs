@@ -57,8 +57,8 @@ public class Pathfinding {
         }
     }
 
-    public List<PathNode> FindPath(int startX, int startY, int endX, int endY) {
-
+    public List<Vector3> FindPath(int startX, int startY, int endX, int endY)
+    {
         Debug.Log($"Finding path from ({startX}, {startY}) to ({endX}, {endY})");
 
         PathNode startNode = grid.GetGridObject(startX, startY);
@@ -70,10 +70,8 @@ public class Pathfinding {
         Debug.Log($"Start Node Walkable: {startNode.isWalkable}, End Node Walkable: {endNode.isWalkable}");
         Debug.Log($"Start Node Position: {startNode.x}, {startNode.y}, End Node Position: {endNode.x}, {endNode.y}");
 
-
-        
-
-        if (startNode == null || endNode == null) {
+        if (startNode == null || endNode == null)
+        {
             // Invalid Path
             Debug.LogError("Invalid Start or End Node!");
             return null;
@@ -82,60 +80,71 @@ public class Pathfinding {
         openList = new List<PathNode> { startNode };
         closedList = new List<PathNode>();
 
-
-        
-        for (int x = 0; x < grid.GetWidth(); x++) { // reset node properties
-            for (int y = 0; y < grid.GetHeight(); y++) {
+        for (int x = 0; x < grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < grid.GetHeight(); y++)
+            {
                 PathNode pathNode = grid.GetGridObject(x, y);
-                pathNode.gCost = 99999999;
+                pathNode.gCost = int.MaxValue; // Set to max value initially
                 pathNode.CalculateFCost();
                 pathNode.cameFromNode = null;
             }
         }
 
-        startNode.gCost = 0; // the distance from the start node to the start node will always be 0
+        startNode.gCost = 0;
         startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
-        
-        
 
-        while (openList.Count > 0) {
+        while (openList.Count > 0)
+        {
             PathNode currentNode = GetLowestFCostNode(openList);
-            if (currentNode == endNode) {
-                // Reached final node
-                
-
-                return CalculatePath(endNode); // return the final path
+            if (currentNode == endNode)
+            {
+                return CalculatePathAsVector3(endNode);
             }
 
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach (PathNode neighbourNode in GetNeighbourList(currentNode)) { // checks neighbours and updates them
-                if (closedList.Contains(neighbourNode)) continue;
-                if (!neighbourNode.isWalkable) {
-                    closedList.Add(neighbourNode);
+            foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
+            {
+                if (closedList.Contains(neighbourNode) || !neighbourNode.isWalkable)
+                {
                     continue;
                 }
-                
-                // the tentative cost is used to determine whether the current path to a neighbor is more efficient than the previously known path
+
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
-                if (tentativeGCost < neighbourNode.gCost) {
+                if (tentativeGCost < neighbourNode.gCost)
+                {
                     neighbourNode.cameFromNode = currentNode;
                     neighbourNode.gCost = tentativeGCost;
                     neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
                     neighbourNode.CalculateFCost();
 
-                    if (!openList.Contains(neighbourNode)) {
+                    if (!openList.Contains(neighbourNode))
+                    {
                         openList.Add(neighbourNode);
                     }
                 }
-                
             }
         }
 
         // Out of nodes on the openList
         return null;
+    }
+
+    private List<Vector3> CalculatePathAsVector3(PathNode endNode)
+    {
+        List<Vector3> path = new List<Vector3>();
+        path.Add(new Vector3(endNode.x, endNode.y) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
+        PathNode currentNode = endNode;
+        while (currentNode.cameFromNode != null)
+        {
+            path.Add(new Vector3(currentNode.cameFromNode.x, currentNode.cameFromNode.y) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
+            currentNode = currentNode.cameFromNode;
+        }
+        path.Reverse();
+        return path;
     }
 
     private List<PathNode> GetNeighbourList(PathNode currentNode) {
@@ -169,14 +178,18 @@ public class Pathfinding {
         return grid.GetGridObject(x, y);
     }
 
-    private List<PathNode> CalculatePath(PathNode endNode) { // Reconstruct the path from end to start
-        List<PathNode> path = new List<PathNode>();
-        path.Add(endNode);
+    private List<Vector3> CalculatePath(PathNode endNode)
+    {
+        List<Vector3> path = new List<Vector3>();
+        path.Add(endNode.GetWorldPosition()); // Assuming you have a method to get world position in PathNode
         PathNode currentNode = endNode;
-        while (currentNode.cameFromNode != null) {
-            path.Add(currentNode.cameFromNode);
+
+        while (currentNode.cameFromNode != null)
+        {
+            path.Add(currentNode.cameFromNode.GetWorldPosition());
             currentNode = currentNode.cameFromNode;
         }
+
         path.Reverse();
         return path;
     }

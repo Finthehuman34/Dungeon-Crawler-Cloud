@@ -46,17 +46,16 @@ public class Enemy : MonoBehaviour
         if (distanceToPlayer < detectionRange && Time.time - lastPathUpdateTime > pathUpdateCooldown)
         {
             Debug.Log("Updating path");
-            UpdatePathfindingGrid();
 
+            // Get grid coordinates for the enemy and player
             int enemyX, enemyY, playerX, playerY;
             pathfinding.GetGrid().GetXY(transform.position, out enemyX, out enemyY);
             pathfinding.GetGrid().GetXY(player.position, out playerX, out playerY);
             Debug.Log($"Enemy Grid Coordinates: ({enemyX}, {enemyY}), Player Grid Coordinates: ({playerX}, {playerY})");
 
-
-
+            // Find path using grid coordinates
             List<Vector3> newPath = pathfinding.FindPath(enemyX, enemyY, playerX, playerY);
-
+            
             if (newPath != null && newPath.Count > 0)
             {
                 currentPath = newPath;

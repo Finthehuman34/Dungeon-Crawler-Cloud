@@ -18,10 +18,14 @@ public class PathNode {
     public bool isWalkable; // checks if a node is walkable - this will be changed to function around walls
     public PathNode cameFromNode; // variable to check if you've come from a node, so you don't go back over that node
 
+    // Add this property to store the world position
+    public Vector3 worldPosition;
+
     public PathNode(Grid<PathNode> grid, int x, int y) { // initialising the nodes within the grid space
         this.grid = grid;
         this.x = x;
         this.y = y;
+        this.worldPosition = grid.GetWorldPosition(x, y); // Set the world position during initialization
         isWalkable = true;
     }
 
@@ -36,6 +40,11 @@ public class PathNode {
 
     public override string ToString() {
         return x + "," + y;
+    }
+
+    public Vector3 GetWorldPosition()
+    {
+        return grid.GetWorldPosition(x, y);
     }
 
 }
