@@ -25,7 +25,7 @@ public class Pathfinding {
         grid.ClearGrid();
     }
 
-    private void InitializeGrid(int width, int height, Vector3 gridPosition)
+    public void InitializeGrid(int width, int height, Vector3 gridPosition)
     {
         if (grid != null)
         {
@@ -34,6 +34,8 @@ public class Pathfinding {
 
         grid = new Grid<PathNode>(width, height, 0.3f, gridPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
+
+    
 
     public Grid<PathNode> GetGrid() { // get method for getting the grid
         return grid;

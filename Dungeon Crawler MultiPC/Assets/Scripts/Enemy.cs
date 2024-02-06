@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void UpdatePathfindingGrid()
+    private void UpdatePathfindingGrid()
     {
         pathfinding.ClearGrid();
         // Calculate new grid size and position based on the enemy's position
@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
         Vector3 gridPosition = CalculateGridPosition();
 
         // Re-initialize the grid with the new size and position
-        pathfinding = new Pathfinding(gridSizeX, gridSizeY, gridPosition);
+        pathfinding.InitializeGrid(gridSizeX, gridSizeY, gridPosition); // Modify this line
         Debug.Log("New grid made");
     }
 

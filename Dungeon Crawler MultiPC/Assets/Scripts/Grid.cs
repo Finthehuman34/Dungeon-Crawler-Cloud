@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 
-public class Grid<TGridObject> {
-
+public class Grid<TGridObject>
+{
     public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
-    public class OnGridObjectChangedEventArgs : EventArgs {
+    public class OnGridObjectChangedEventArgs : EventArgs
+    {
         public int x;
         public int y;
     }
@@ -19,8 +20,12 @@ public class Grid<TGridObject> {
     private float cellSize;
     private Vector3 originPosition;
     private TGridObject[,] gridArray;
+    private TextMesh[,] debugTextArray;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject) {
+    private bool showDebug;
+
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
+    {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
@@ -28,26 +33,26 @@ public class Grid<TGridObject> {
 
         gridArray = new TGridObject[width, height];
 
-        for (int x = 0; x < gridArray.GetLength(0); x++) {
-            for (int y = 0; y < gridArray.GetLength(1); y++) {
-                gridArray[x, y] = createGridObject(this, x, y);
-            }
-        }
-
         bool showDebug = true;
         if (showDebug)
         {
-            TextMesh[,] debugTextArray = new TextMesh[width, height];
+            debugTextArray = new TextMesh[width, height];
 
-            for (int x = 0; x < gridArray.GetLength(0); x++)
+            for (int x = 0; x < width; x++)
             {
-                for (int y = 0; y < gridArray.GetLength(1); y++)
+                for (int y = 0; y < height; y++)
                 {
+                    // Initialize debugTextArray
+                    debugTextArray[x, y] = new TextMesh();
+
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
 
-                    // Initialize debugTextArray
-                    debugTextArray[x, y] = new TextMesh();
+                    // Ensure that debugTextArray[x, y] is not null
+                    if (debugTextArray[x, y] != null)
+                    {
+                        debugTextArray[x, y].text = gridArray[x, y]?.ToString();
+                    }
                 }
             }
 
@@ -56,14 +61,50 @@ public class Grid<TGridObject> {
 
             OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
             {
+                int x = eventArgs.x;
+                int y = eventArgs.y;
+
                 // Ensure that debugTextArray[eventArgs.x, eventArgs.y] is not null
-                if (debugTextArray[eventArgs.x, eventArgs.y] != null)
+                if (x >= 0 && x < width && y >= 0 && y < height)
                 {
-                    debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
+                    if (debugTextArray[x, y] == null)
+                    {
+                        // Initialize debugTextArray
+                        debugTextArray[x, y] = new TextMesh();
+                    }
+
+                    if (gridArray != null && x < gridArray.GetLength(0) && y < gridArray.GetLength(1))
+                    {
+                        debugTextArray[x, y].text = gridArray[x, y]?.ToString();
+                    }
                 }
             };
         }
 
+        InitializeGrid(createGridObject);
+    }
+
+    private void HandleGridObjectChanged(object sender, OnGridObjectChangedEventArgs eventArgs)
+    {
+        if (showDebug && debugTextArray != null)
+        {
+            int x = eventArgs.x;
+            int y = eventArgs.y;
+
+            if (x >= 0 && x < width && y >= 0 && y < height)
+            {
+                if (debugTextArray[x, y] == null)
+                {
+                    // Initialize debugTextArray
+                    debugTextArray[x, y] = new TextMesh();
+                }
+
+                if (gridArray != null && x < gridArray.GetLength(0) && y < gridArray.GetLength(1))
+                {
+                    debugTextArray[x, y].text = gridArray[x, y]?.ToString();
+                }
+            }
+        }
     }
 
     public void ClearGrid()
