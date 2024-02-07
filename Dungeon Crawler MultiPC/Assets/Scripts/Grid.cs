@@ -38,19 +38,19 @@ public class Grid<TGridObject>
 
     
 
-    public void ClearGrid()
-    {
-    for (int x = 0; x < gridArray.GetLength(0); x++)
-    {
-        for (int y = 0; y < gridArray.GetLength(1); y++)
+    public void ClearGrid() // this is used to delete the previous grid made, so there are no errors with loads of grids being made
         {
-            SetGridObject(x, y, default(TGridObject)); // Set to default value instead of null
+        for (int x = 0; x < gridArray.GetLength(0); x++)
+        {
+            for (int y = 0; y < gridArray.GetLength(1); y++)
+            {
+                SetGridObject(x, y, default(TGridObject)); // sets each grid node to default so it essentially doesn't exist anymore
+            }
         }
-    }
 
-    // Ensure the event is not null before triggering it
-    OnGridObjectChanged?.Invoke(this, new OnGridObjectChangedEventArgs { x = -1, y = -1 });
-    }
+        // ensures the event is not null before triggering it
+        OnGridObjectChanged?.Invoke(this, new OnGridObjectChangedEventArgs { x = -1, y = -1 });
+        }
 
     public int GetWidth() {
         return width;
@@ -71,7 +71,7 @@ public class Grid<TGridObject>
     public void GetXY(Vector3 worldPosition, out int x, out int y) {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-        Debug.Log($"World Position: {worldPosition}, Grid Coordinates: ({x}, {y})");
+        Debug.Log($"World Position: {worldPosition}, Grid Coordinates: ({x}, {y})"); // debugging to check the world coordinates are being translated into grid correctly
     }
 
     public void SetGridObject(int x, int y, TGridObject value) {
@@ -95,7 +95,7 @@ public class Grid<TGridObject>
         if (x >= 0 && y >= 0 && x < width && y < height) {
             return gridArray[x, y];
         } else {
-            Debug.LogError($"Attempted to access grid position ({x}, {y}), which is out of bounds.");
+            Debug.LogError($"Attempted to access grid position ({x}, {y}), which is out of bounds."); // debugging to check if the player is in the grid
             return default(TGridObject);
         }
     }
