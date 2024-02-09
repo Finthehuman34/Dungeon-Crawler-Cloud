@@ -25,7 +25,7 @@ public class PathNode {
         this.grid = grid;
         this.x = x;
         this.y = y;
-        this.worldPosition = grid.GetWorldPosition(x, y); // Set the world position during initialization
+        this.worldPosition = grid.GetWorldPosition(x, y); // sets the world position during initialization
         isWalkable = true;
     }
 
@@ -42,7 +42,7 @@ public class PathNode {
         return x + "," + y;
     }
 
-    public Vector3 GetWorldPosition()
+    public Vector3 GetWorldPosition() // gets the world position of an object in relation to its x y coords
     {
         return grid.GetWorldPosition(x, y);
     }
