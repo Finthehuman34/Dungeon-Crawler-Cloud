@@ -45,7 +45,7 @@ public class EnemyCombat : MonoBehaviour
             
             collision.gameObject.GetComponent<PlayerCombat>().TakeDamage(10); // uses the TakeDamage method in the player class to cause 10 damage to the player
 
-            TakeDamage(10);
+            
         }
     }
 
