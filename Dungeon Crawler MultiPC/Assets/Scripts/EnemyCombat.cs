@@ -14,18 +14,18 @@ public class EnemyCombat : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        healthCanvas = Instantiate(Resources.Load("HealthCanvas") as Canvas, transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
-        healthSlider = healthCanvas.GetComponentInChildren<Slider>();
-        healthSlider.maxValue = maxHealth;
+        healthCanvas = Instantiate(Resources.Load("HealthCanvas") as Canvas, transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity); // keeps the slider locked to above the enemy's head
+        healthSlider = healthCanvas.GetComponentInChildren<Slider>(); // accesses the correct slider for the enemy health
+        healthSlider.maxValue = maxHealth; // set the max value of the slider (the most health the enemy can have)
         healthSlider.value = currentHealth;
-        
+
         
         
     }
 
     private void Update()
     {
-        TakeDamage(1);
+        
         Debug.Log("Enemy health:" + currentHealth);
         
         if (currentHealth <= 0) // if the enemy dies it will be deleted from the game
@@ -44,6 +44,8 @@ public class EnemyCombat : MonoBehaviour
         {
             
             collision.gameObject.GetComponent<PlayerCombat>().TakeDamage(10); // uses the TakeDamage method in the player class to cause 10 damage to the player
+
+            TakeDamage(10);
         }
     }
 
