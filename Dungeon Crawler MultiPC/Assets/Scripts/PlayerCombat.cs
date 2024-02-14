@@ -16,9 +16,10 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] private Animator anim;
     [SerializeField] private float meleespeed;
-    [SerializeField] private float damage;
+    
 
     float timeUntilMelee;
+    public GameObject Sword;
 
 
 
@@ -49,6 +50,16 @@ public class PlayerCombat : MonoBehaviour
             {
                 anim.SetTrigger("Attack");
                 timeUntilMelee = meleespeed;
+
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mousePos.z = 0; // Assuming your game is 2D, set the z-coordinate to 0
+
+                // Calculate the direction from the player to the mouse position
+                Vector2 direction = (mousePos - (Vector3)Sword.transform.position).normalized;
+
+                // Rotate the sword in the direction of the mouse
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                Sword.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             }
             
         } else
@@ -57,6 +68,8 @@ public class PlayerCombat : MonoBehaviour
         }
 
         
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -64,7 +77,7 @@ public class PlayerCombat : MonoBehaviour
         if (other.tag == "Enemy")
         {
             Debug.Log("Enemy Hit");
-            other.GetComponent<EnemyCombat>().TakeDamage(damage);
+            other.GetComponent<EnemyCombat>().TakeDamage(10);
         }
     }
 
