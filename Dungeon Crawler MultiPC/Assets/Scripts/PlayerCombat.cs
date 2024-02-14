@@ -17,7 +17,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private float meleespeed;
     float timeUntilMelee;
-    public GameObject Sword;
+    public GameObject Sword; // identifies the Sword object in game
 
 
 
@@ -74,8 +74,20 @@ public class PlayerCombat : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-            Debug.Log("Enemy Hit");
+            
+
             other.GetComponent<EnemyCombat>().TakeDamage(10); // damages the enemy for 10 points of damage if sword collides with enemy, this can be altered 
+        }
+
+        if (other.tag == "ArmourPickup")
+        {
+            ArmourPickup armourPickup = other.GetComponent<ArmourPickup>();
+            if (armourPickup != null)
+            {
+                // Handle armour pickup logic (increase maxArmour and add armourPoints)
+                PickupArmour(armourPickup.armourPoints);
+                Destroy(other.gameObject); // Destroy the armour pickup object
+            }
         }
     }
 
@@ -96,9 +108,24 @@ public class PlayerCombat : MonoBehaviour
             currentHealth -= damage;
         }
 
-        Debug.Log("Player took " + damage + " damage. Current health: " + currentHealth + ", Current armour: " + currentArmour);
-
         PlayerHealthSlider.value = currentHealth;
+        PlayerArmourSlider.value = currentArmour;
+    }
+
+
+    public void PickupArmour(int armourPoints)
+    {
+        
+        maxArmour += armourPoints; // increases max armour
+        currentArmour += (armourPoints + 10); // increases current armour by a bit more than max is 
+
+        
+        currentArmour = Mathf.Clamp(currentArmour, 0, maxArmour); // stops current armour exceeding the max armour stat
+
+        Debug.Log("Picked up armour. Current armour: " + currentArmour + ", Max armour: " + maxArmour);
+
+        
+        PlayerArmourSlider.maxValue = maxArmour; // sliders need updating again
         PlayerArmourSlider.value = currentArmour;
     }
 }

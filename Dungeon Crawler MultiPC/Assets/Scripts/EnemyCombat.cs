@@ -26,7 +26,7 @@ public class EnemyCombat : MonoBehaviour
     private void Update()
     {
         
-        Debug.Log("Enemy health:" + currentHealth);
+        
         
         if (currentHealth <= 0) // if the enemy dies it will be deleted from the game
         {
@@ -57,7 +57,7 @@ public class EnemyCombat : MonoBehaviour
         currentHealth -= damage;
 
         
-        Debug.Log("Enemy took " + damage + " damage. Current health: " + currentHealth);
+        
         healthSlider.value = currentHealth;
     }
 }
