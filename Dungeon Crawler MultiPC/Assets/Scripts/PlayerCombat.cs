@@ -16,8 +16,6 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] private Animator anim;
     [SerializeField] private float meleespeed;
-    
-
     float timeUntilMelee;
     public GameObject Sword;
 
@@ -26,10 +24,10 @@ public class PlayerCombat : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = maxHealth; // initially set the health and armour of the player to their max stats (full health and armour)
         currentArmour = maxArmour;
 
-        PlayerHealthSlider.maxValue = maxHealth;
+        PlayerHealthSlider.maxValue = maxHealth; // sets the values of the sliders 
         PlayerHealthSlider.value = currentHealth;
         PlayerArmourSlider.maxValue = maxArmour;
         PlayerArmourSlider.value = currentArmour;
@@ -44,22 +42,22 @@ public class PlayerCombat : MonoBehaviour
             // will update this
         }
 
-        if(timeUntilMelee <= 0f)
+        if(timeUntilMelee <= 0f) // checks if the delay to attack is over
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) // if left mouse button clicked
             {
-                anim.SetTrigger("Attack");
-                timeUntilMelee = meleespeed;
+                anim.SetTrigger("Attack"); // activates the attack animation
+                timeUntilMelee = meleespeed; // delay before you can attack again
 
-                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePos.z = 0; // Assuming your game is 2D, set the z-coordinate to 0
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // get the position of the mouse on the screen
+                mousePos.z = 0; // as the game is 2D can ignore z coord
 
-                // Calculate the direction from the player to the mouse position
-                Vector2 direction = (mousePos - (Vector3)Sword.transform.position).normalized;
+                
+                Vector2 direction = (mousePos - (Vector3)Sword.transform.position).normalized; 
 
-                // Rotate the sword in the direction of the mouse
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Sword.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // sets the angle at which the sword should swing in relation to the position of the mouse when clicked
+                Sword.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));// moves the sword towards that direction
             }
             
         } else
@@ -72,12 +70,12 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other) // checks for the collision of the sword and the enemy
     {
         if (other.tag == "Enemy")
         {
             Debug.Log("Enemy Hit");
-            other.GetComponent<EnemyCombat>().TakeDamage(10);
+            other.GetComponent<EnemyCombat>().TakeDamage(10); // damages the enemy for 10 points of damage if sword collides with enemy, this can be altered 
         }
     }
 
