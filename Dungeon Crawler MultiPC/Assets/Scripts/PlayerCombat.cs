@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class PlayerCombat : MonoBehaviour
     float timeUntilMelee;
     public GameObject Sword; // identifies the Sword object in game
 
-    private int currentDamage = 10; // set the original damage dealt oto 10
+    private int currentDamage = 10; // set the original damage dealt to 10
+
+    public TextMeshProUGUI GoldCounterText; // links the text of the gold counter on screen to the variable
+    private int GoldCounter = 0;
 
 
 
@@ -82,38 +86,7 @@ public class PlayerCombat : MonoBehaviour
             
         }
 
-        if (other.tag == "ArmourPickup")
-        {
-            ArmourPickup armourPickup = other.GetComponent<ArmourPickup>();
-            if (armourPickup != null)
-            {
-                
-                PickupArmour(armourPickup.armourPoints); // uses the pickuparmour function to increase the armour
-                Destroy(other.gameObject); // destroys the armour object
-            }
-        }
-
-        if (other.tag == "HealthPotionPickup")
-        {
-            HealthPotionPickup HealthPotionPickup = other.GetComponent<HealthPotionPickup>();
-            if (HealthPotionPickup != null)
-            {
-                
-                HealthPickupPotion(HealthPotionPickup.maxHealthIncrease, HealthPotionPickup.healthRestore); // pass the increase in health max and current as parameters
-                Destroy(other.gameObject); // destroys the potion object
-            }
-        }
-
-        if (other.tag =="DamagePotionPickup")
-        {
-            DamagePotionPickup damagePotionPickup = other.GetComponent<DamagePotionPickup>();
-            if (damagePotionPickup != null)
-            {
-                
-                DamagePotionPickup(damagePotionPickup.damageIncrease); // passes the damage increase as a parameter in the method to increase the damage
-                Destroy(other.gameObject); // destroys the potion object
-            }
-        }
+        
     }
 
     
@@ -181,5 +154,21 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(delay); // once the potion runs out the damage is set back to 10
         currentDamage = 10;
         Debug.Log("Current Damage: " + currentDamage);
+    }
+
+    public void PickupGold(int amount)
+    {
+        GoldCounter += amount; // change the gold counter once gold is picked up
+        UpdateGoldCounter(); // used to update the counter on screen
+
+        
+    }
+
+    private void UpdateGoldCounter()
+    {
+        if (GoldCounterText != null)
+        {
+            GoldCounterText.text = "Gold: " + GoldCounter.ToString(); //  updates the counter on screen
+        }
     }
 }
