@@ -56,6 +56,7 @@ public class EnemyCombat : MonoBehaviour
         // the enemy attack will deal this damage when added
         currentHealth -= damage;
 
+
         
         
         healthSlider.value = currentHealth;

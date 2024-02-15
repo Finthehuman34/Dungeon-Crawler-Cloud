@@ -19,6 +19,8 @@ public class PlayerCombat : MonoBehaviour
     float timeUntilMelee;
     public GameObject Sword; // identifies the Sword object in game
 
+    private int currentDamage = 10; // set the original damage dealt oto 10
+
 
 
 
@@ -76,7 +78,8 @@ public class PlayerCombat : MonoBehaviour
         {
             
 
-            other.GetComponent<EnemyCombat>().TakeDamage(10); // damages the enemy for 10 points of damage if sword collides with enemy, this can be altered 
+            other.GetComponent<EnemyCombat>().TakeDamage(currentDamage); // updated so it takes the current damage, not just a set value
+            
         }
 
         if (other.tag == "ArmourPickup")
@@ -84,9 +87,31 @@ public class PlayerCombat : MonoBehaviour
             ArmourPickup armourPickup = other.GetComponent<ArmourPickup>();
             if (armourPickup != null)
             {
-                // Handle armour pickup logic (increase maxArmour and add armourPoints)
-                PickupArmour(armourPickup.armourPoints);
-                Destroy(other.gameObject); // Destroy the armour pickup object
+                
+                PickupArmour(armourPickup.armourPoints); // uses the pickuparmour function to increase the armour
+                Destroy(other.gameObject); // destroys the armour object
+            }
+        }
+
+        if (other.tag == "HealthPotionPickup")
+        {
+            HealthPotionPickup HealthPotionPickup = other.GetComponent<HealthPotionPickup>();
+            if (HealthPotionPickup != null)
+            {
+                
+                HealthPickupPotion(HealthPotionPickup.maxHealthIncrease, HealthPotionPickup.healthRestore); // pass the increase in health max and current as parameters
+                Destroy(other.gameObject); // destroys the potion object
+            }
+        }
+
+        if (other.tag =="DamagePotionPickup")
+        {
+            DamagePotionPickup damagePotionPickup = other.GetComponent<DamagePotionPickup>();
+            if (damagePotionPickup != null)
+            {
+                
+                DamagePotionPickup(damagePotionPickup.damageIncrease); // passes the damage increase as a parameter in the method to increase the damage
+                Destroy(other.gameObject); // destroys the potion object
             }
         }
     }
@@ -122,10 +147,39 @@ public class PlayerCombat : MonoBehaviour
         
         currentArmour = Mathf.Clamp(currentArmour, 0, maxArmour); // stops current armour exceeding the max armour stat
 
-        Debug.Log("Picked up armour. Current armour: " + currentArmour + ", Max armour: " + maxArmour);
 
         
         PlayerArmourSlider.maxValue = maxArmour; // sliders need updating again
         PlayerArmourSlider.value = currentArmour;
+    }
+
+    public void HealthPickupPotion(int maxHealthIncrease, int healthRestore)
+    {
+        
+        maxHealth += maxHealthIncrease;
+        currentHealth = Mathf.Min(currentHealth + healthRestore, maxHealth); // makes sure the health is between the min and max health
+
+        
+        PlayerHealthSlider.maxValue = maxHealth; // update sliders
+        PlayerHealthSlider.value = currentHealth;
+    }
+
+    public void DamagePotionPickup(int damageIncrease)
+    {
+        
+        currentDamage += damageIncrease;
+
+        Debug.Log("Picked up damage potion. Current damage: " + currentDamage);
+        StartCoroutine(ResetDamageAfterDelay(20f)); // trigger the start of the duration of the potion
+
+
+
+    }
+
+    private IEnumerator ResetDamageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // once the potion runs out the damage is set back to 10
+        currentDamage = 10;
+        Debug.Log("Current Damage: " + currentDamage);
     }
 }
