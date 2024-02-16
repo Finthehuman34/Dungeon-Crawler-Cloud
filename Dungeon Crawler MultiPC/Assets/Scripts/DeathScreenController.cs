@@ -9,12 +9,12 @@ public class DeathScreenController : MonoBehaviour
 
     private void Start()
     {
-        HideDeathScreen();
+        HideDeathScreen(); // hide the death screen at the start
     }
 
     public void ShowDeathScreen()
     {
-        deathScreenUI.SetActive(true);
+        deathScreenUI.SetActive(true); 
     }
 
     public void HideDeathScreen()
@@ -24,13 +24,12 @@ public class DeathScreenController : MonoBehaviour
 
     public void Revive()
     {
-        // Implement the logic for reviving the player (to be added later)
-        // For now, you can reload the current scene as an example.
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // reloads the main game scene
     }
 
     public void QuitGame()
     {
-        Application.Quit();
+        UnityEditor.EditorApplication.isPlaying = false; // quits the game
     }
 }
