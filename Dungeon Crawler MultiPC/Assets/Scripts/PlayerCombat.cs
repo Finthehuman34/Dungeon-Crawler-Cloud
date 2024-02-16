@@ -25,6 +25,8 @@ public class PlayerCombat : MonoBehaviour
     public TextMeshProUGUI GoldCounterText; // links the text of the gold counter on screen to the variable
     private int GoldCounter = 0;
 
+    public DeathScreenController deathScreenController; // reference to the death screen
+
 
 
 
@@ -45,7 +47,8 @@ public class PlayerCombat : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
-            // will update this
+            Destroy(gameObject);
+            deathScreenController.ShowDeathScreen();
         }
 
         if(timeUntilMelee <= 0f) // checks if the delay to attack is over
