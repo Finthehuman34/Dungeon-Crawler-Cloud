@@ -27,6 +27,8 @@ public class PlayerCombat : MonoBehaviour
 
     public DeathScreenController deathScreenController; // reference to the death screen
 
+    public int Kills = 0;
+
 
 
 
@@ -49,6 +51,7 @@ public class PlayerCombat : MonoBehaviour
         {
             Destroy(gameObject);
             deathScreenController.ShowDeathScreen();
+            Kills = 0;
         }
 
         if(timeUntilMelee <= 0f) // checks if the delay to attack is over
@@ -172,6 +175,14 @@ public class PlayerCombat : MonoBehaviour
         if (GoldCounterText != null)
         {
             GoldCounterText.text = "Gold: " + GoldCounter.ToString(); //  updates the counter on screen
+        }
+    }
+
+    public void Kill() {
+        Kills ++;
+
+        if (Kills >= 15) {
+            Debug.Log("WIN");
         }
     }
 }
