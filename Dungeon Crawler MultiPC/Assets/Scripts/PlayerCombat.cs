@@ -185,7 +185,7 @@ public class PlayerCombat : MonoBehaviour
         Kills ++;
         Debug.Log("Kill trigger");
 
-        if (Kills >= 3) {
+        if (Kills >= 21) {
             WinScreenController.ShowWinScreen();
             Debug.Log("WIN");
         }
