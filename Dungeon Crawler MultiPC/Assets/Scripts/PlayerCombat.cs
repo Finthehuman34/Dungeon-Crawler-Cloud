@@ -33,6 +33,8 @@ public class PlayerCombat : MonoBehaviour
 
 
 
+
+
     private void Start()
     {
         currentHealth = maxHealth; // initially set the health and armour of the player to their max stats (full health and armour)
