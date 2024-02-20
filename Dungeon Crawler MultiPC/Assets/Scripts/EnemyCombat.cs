@@ -12,6 +12,8 @@ public class EnemyCombat : MonoBehaviour
 
     public int damage = 10;
 
+    public GameObject playerObject; // reference the player object
+
     
     
 
@@ -31,21 +33,25 @@ public class EnemyCombat : MonoBehaviour
     private void Update()
     {
         
-        
-        
         if (currentHealth <= 0) // if the enemy dies it will be deleted from the game
         {
-            
+
+            Debug.Log("Enemy Killed!"); 
+
+            if (playerObject != null && playerObject.CompareTag("Player"))
+            {
+                playerObject.GetComponent<PlayerCombat>().Kill();
+            }
             
             Destroy(gameObject); 
-            Destroy(healthCanvas.gameObject);  
-
-            if (gameObject.CompareTag("Player"))
-            {
-                gameObject.GetComponent<PlayerCombat>().Kill();
-                Debug.Log("Enemy Killed!");
-            }
+            Destroy(healthCanvas.gameObject); 
+            
+            
+            
+            
         }
+        
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision) // check whether the collision boxes of the player and enemy have collided
@@ -55,9 +61,11 @@ public class EnemyCombat : MonoBehaviour
         {
             
             collision.gameObject.GetComponent<PlayerCombat>().TakeDamage(damage); // uses the TakeDamage method in the player class to cause damage to the player
-
+            
             
         }
+
+        
     }
 
     

@@ -26,6 +26,7 @@ public class PlayerCombat : MonoBehaviour
     private int GoldCounter = 0;
 
     public DeathScreenController deathScreenController; // reference to the death screen
+    public WinScreenController WinScreenController; // reference to the win screen
 
     public int Kills = 0;
 
@@ -47,6 +48,8 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
+
+        Debug.Log("Kills:"+Kills);
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
@@ -180,8 +183,10 @@ public class PlayerCombat : MonoBehaviour
 
     public void Kill() {
         Kills ++;
+        Debug.Log("Kill trigger");
 
-        if (Kills >= 15) {
+        if (Kills >= 3) {
+            WinScreenController.ShowWinScreen();
             Debug.Log("WIN");
         }
     }
