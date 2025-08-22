@@ -58,7 +58,7 @@ This project followed a structured software development lifecycle:
 
 **Demo & Documentation**
 
-- Gameplay Video: 
+- Gameplay Video: https://github.com/Finthehuman34/Dungeon-Crawler-Cloud/blob/main/GameplayDemo.mp4
 
 - Full Documentation (PDF): 
 
